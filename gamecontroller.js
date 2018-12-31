@@ -6,7 +6,7 @@
  **/
 
 /*
- * TODO: 
+ * TODO:
  * - multiple controllers (number as 2nd argument)
  * - construct from serial number or path
  */
@@ -33,11 +33,16 @@ function GameController(type) {
 GameController.prototype = {
   _hid: null,
   _vendor: null,
-  connect: function(cb) {
+  connect: function(cb, path) {
     let ven = this._vendor;
 
     try {
-      this._hid = new HID.HID(ven.vendorId, ven.productId);
+      if(path){
+        this._hid = new HID.HID(path);
+      }
+      else{
+        this._hid = new HID.HID(ven.vendorId, ven.productId);
+      }
     } catch (e) {
       this.emit('error', e);
       return;
